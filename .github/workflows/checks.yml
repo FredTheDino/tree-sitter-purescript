@@ -5,6 +5,7 @@ on:
 
 jobs:
   test:
+    runs-on: ubuntu
     steps:
       - uses: actions/checkout@v2
 
