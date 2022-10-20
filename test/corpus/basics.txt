@@ -1,0 +1,79 @@
+======================
+basic: tiny module
+======================
+
+module A where
+
+fun a = a
+
+----------------------
+
+(module
+  name: (module_name)
+  (function_definition
+    name: (identifier)
+    arguments: (identifier)
+    body: (expression)))
+
+======================
+basic: module name with dots
+======================
+
+module A.B.C.D where
+
+----------------------
+
+(module
+  name: (module_name))
+
+======================
+basic: bigger module
+======================
+
+module A where
+
+fun a = a
+
+fun a = 1
+
+fun a = { a }
+
+fun a = { a : 1 }
+
+fun a = a { a = 1 }
+
+fun a = a { a = 1 }
+
+---
+
+(module
+  name: (module_name)
+  (function_definition
+    name: (identifier)
+    arguments: (identifier)
+    body: (expression))
+  (function_definition
+    name: (identifier)
+    arguments: (identifier)
+    body: (expression))
+  (function_definition
+    name: (identifier)
+    arguments: (identifier)
+    body: (expression))
+  (function_definition
+    name: (identifier)
+    arguments: (identifier)
+    body: (expression
+      (expression)))
+  (function_definition
+    name: (identifier)
+    arguments: (identifier)
+    body: (expression
+      (expression)
+      (expression)))
+  (function_definition
+    name: (identifier)
+    arguments: (identifier)
+    body: (expression
+      (expression)
+      (expression))))
