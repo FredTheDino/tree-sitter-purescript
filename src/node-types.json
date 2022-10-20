@@ -1,0 +1,188 @@
+[
+  {
+    "type": "data",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "type_variable",
+            "named": true
+          }
+        ]
+      },
+      "body": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "|",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "function_definition",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "@",
+            "named": false
+          },
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "identifier",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "module",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "module_name",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "data",
+          "named": true
+        },
+        {
+          "type": "function_definition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "module_name",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "type_variable",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": ".",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": "=",
+    "named": false
+  },
+  {
+    "type": "@",
+    "named": false
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
+    "type": "data",
+    "named": false
+  },
+  {
+    "type": "module",
+    "named": false
+  },
+  {
+    "type": "where",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "|",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
+  }
+]
