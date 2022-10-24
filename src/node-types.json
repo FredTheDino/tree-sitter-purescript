@@ -77,7 +77,7 @@
       "required": true,
       "types": [
         {
-          "type": "binder2",
+          "type": "binderAtom",
           "named": true
         },
         {
@@ -388,21 +388,6 @@
         },
         {
           "type": "typeHead",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "declElse",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "sep",
           "named": true
         }
       ]
@@ -1128,49 +1113,26 @@
     }
   },
   {
+    "type": "module",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "moduleBody",
+          "named": true
+        },
+        {
+          "type": "moduleHeader",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "moduleBody",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "end",
-          "named": true
-        },
-        {
-          "type": "moduleDecls",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "moduleDecl",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "decl",
-          "named": true
-        },
-        {
-          "type": "declElse",
-          "named": true
-        },
-        {
-          "type": "importDecl",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "moduleDecls",
     "named": true,
     "fields": {},
     "children": {
@@ -1189,6 +1151,25 @@
     }
   },
   {
+    "type": "moduleDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "decl",
+          "named": true
+        },
+        {
+          "type": "importDecl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "moduleHeader",
     "named": true,
     "fields": {},
@@ -1201,34 +1182,19 @@
           "named": true
         },
         {
-          "type": "exports",
-          "named": true
-        },
-        {
-          "type": "moduleImports",
-          "named": true
-        },
-        {
-          "type": "moduleName",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "moduleImports",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
           "type": "end",
           "named": true
         },
         {
+          "type": "exports",
+          "named": true
+        },
+        {
           "type": "importDecl",
+          "named": true
+        },
+        {
+          "type": "moduleName",
           "named": true
         },
         {

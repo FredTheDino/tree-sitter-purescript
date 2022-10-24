@@ -11,10 +11,10 @@ const LOWER              = /[a-z][A-Za-z0-9_]*/
 const QUAL_LOWER         = /([A-Z][A-Za-z0-9_]\.)+[a-z][A-Za-z0-9_]*/
 const UPPER              = /[A-Z][A-Za-z0-9_]*/
 const QUAL_UPPER         = /([A-Z][A-Za-z0-9_]\.)+[A-Z][A-Za-z0-9_]*/
-const SYMBOL             = /[<>?!#@£$]+/ // No idea what to put here, I'm guessing its something like this
-const QUAL_SYMBOL        = /([A-Z][A-Za-z0-9_]\.)+[<>?!#@£$]+/
-const OPERATOR           = /[+\-*\/]/ // No idea what to put here, I'm guessing its something like this
-const QUAL_OPERATOR      = /([A-Z][A-Za-z0-9_]\.)+[+\-*\/]+/
+const SYMBOL             = /[a-z]+/ // No idea what to put here, I'm guessing its something like this
+const QUAL_SYMBOL        = /([A-Z][A-Za-z0-9_]\.)+[a-z]+/
+const OPERATOR           = /[<>?!#@£$+\-*\/]/ // No idea what to put here, I'm guessing its something like this
+const QUAL_OPERATOR      = /([A-Z][A-Za-z0-9_]\.)+[<>?!#@£$+\-*\/]+/
 const LIT_HOLE           = /_[A-Za-z0-9_]+/
 const LIT_CHAR           = /'.'/
 const LIT_STRING         = /".*"/
@@ -40,160 +40,145 @@ module.exports = grammar({
   ],
 
   rules : {
-    moduleName : $ => choice(UPPER, QUAL_UPPER),
+    module : $ => seq($.moduleHeader, $.moduleBody),
 
-    qualProperName : $ => choice(UPPER, QUAL_UPPER),
-    properName : $ => choice(UPPER, QUAL_UPPER),
+    moduleHeader : $ => seq("module", $.moduleName, optional($.exports), "where", optional(seq($.begin, sep($.importDecl, $.sep), $.end))),
 
-    qualIdent : $ => choice(LOWER, QUAL_LOWER, 'as', 'hiding', 'role', 'nominal', 'representational', 'phantom'),
-    ident : $ => choice(LOWER, 'as', 'hiding', 'role', 'nominal', 'representational', 'phantom'),
+    moduleBody : $ => manySep($.moduleDecl, $.end),
 
-    qualOp : $ => choice(OPERATOR, QUAL_OPERATOR, '<=', '-', ':'),
-    op : $ => choice(OPERATOR, '<=', '-', ':'),
+    moduleDecl : $ => choice($.importDecl, sep($.decl, "else", optional($.sep))),
 
-    qualSymbol : $ => choice(SYMBOL, QUAL_SYMBOL, '(..)'),
-    symbol : $ => choice(SYMBOL, '(..)'),
+    exports : $ => seq("(", sep($.export_, ","), ")"),
 
-    label : $ => choice( LOWER 
-                       , LIT_STRING 
-                       , LIT_RAW_STRING 
-                       , 'ado' 
-                       , 'as' 
-                       , 'case' 
-                       , 'class' 
-                       , 'data' 
-                       , 'derive' 
-                       , 'do' 
-                       , 'else' 
-                       , 'false' 
-                       , 'forall' 
-                       , 'foreign' 
-                       , 'hiding' 
-                       , 'import' 
-                       , 'if' 
-                       , 'in' 
-                       , 'infix' 
-                       , 'infixl' 
-                       , 'infixr' 
-                       , 'instance' 
-                       , 'let' 
-                       , 'module' 
-                       , 'newtype' 
-                       , 'nominal' 
-                       , 'of' 
-                       , 'phantom' 
-                       , 'representational' 
-                       , 'role' 
-                       , 'then' 
-                       , 'true' 
-                       , 'type' 
-                       , 'where'
-                       ),
-
-    hole : $ => LIT_HOLE,
-
-    string : $ => choice(LIT_STRING, LIT_RAW_STRING),
-
-    char : $ => LIT_CHAR,
-
-    number : $ => choice(LIT_NUMBER, LIT_INT),
-
-    int : $ => LIT_INT,
-
-    boolean : $ => choice("true", "false"),
-
-    // Types
-    // Not sure if this works
-    type : $ => seq($.type1, optional(seq("::", $.type))),
-    type1 : $ => seq($.type2, optional(seq("forall", many($.typeVarBinding), ".", $.type1))),
-    type2 : $ => seq($.type3, optional(choice( seq($.type3, '->', $.type1)
-                                             , seq($.type3, '=>', $.type1)
-                                             ))),
-    type3 : $ => choice($.type4, seq($.type3, $.qualOp, $.type4)),
-    type4 : $ => choice($.type5, seq("-", $.int)),
-    type5 : $ => repeat1($.typeAtom),
-
-    typeAtom : $ => choice(
-      "_",
+    export_ : $ => choice(
       $.ident,
-      $.qualProperName,
-      $.qualSymbol,
-      $.string,
-      $.int,
-      $.hole,
-      '(->)', // Not sure this is right
-      seq("{", optional($.row), "}"),
-      seq("(", optional($.row), ")"),
-      seq("(", $.type1, ")"),
-      seq("(", $.typeKindedAtom, "::", $.type, ")"),
+      $.symbol,
+      seq($.properName, optional($.dataMembers)),
+      seq("type", $.symbol),
+      seq("class", $.properName),
+      seq("module", $.moduleName),
     ),
 
-    // = Comment from `grammar.y` =
-    // Due to a conflict between row syntax and kinded type syntax, we require
-    // kinded type variables to be wrapped in parens. Thus `(a :: Foo)` is always a
-    // row, and to annotate `a` with kind `Foo`, one must use `((a) :: Foo)`.
-    typeKindedAtom : $ => choice(
-      "_",
-      $.qualProperName,
-      $.qualSymbol,
-      $.int,
-      $.hole,
-      '(->)', // Not sure this is right
-      seq("{", optional($.row), "}"),
-      seq("(", optional($.row), ")"),
-      seq("(", $.type1, ")"),
+    dataMembers : $ => choice(
+      "(..)",
+      seq("(", ")"),
+      seq("(", sep($.properName, ","), ")"),
     ),
 
-    row : $ => choice(
-      seq("|", $.type),
-      seq(sep($.rowLabel, ","), optional(seq("|", $.type))),
-    ),
+    importDecl : $ => seq("import", $.moduleName, optional($.imports), optional(seq("as", $.moduleName))),
 
-    rowLabel : $ => seq($.label, "::", $.type),
+    imports : $ => seq(optional("hiding"), "(", sep($.import_, ","), ")"),
 
-    typeVarBinding : $ => choice(
+    import_ : $ => choice(
       $.ident,
-      seq("(", $.ident, "::", $.type, ")"),
+      $.symbol,
+      seq($.properName, optional($.dataMembers)),
+      seq("type", $.symbol),
+      seq("classs", $.properName),
     ),
 
-    forall : $ => choice(
-      "forall", // TODO: There's a Unicode variant here, not sure it's gonna work
+    decl : $ => choice(
+      seq($.dataHead, optional(seq("=", sep($.dataCtor, "|")))),
+      seq($.typeHead, "=", $.type),
+      seq($.newtypeHead, "=", $.properName, $.type),
+      seq($.classHead, optional(seq(
+        "where", $.begin, manySep($.classMember, $.sep), $.end))
+      ),
+      seq($.instHead, optional(seq(
+        "where", $.begin, manySep($.instBinding, $.sep), $.end))
+      ),
+      //
+      seq("data", $.properName, "::", $.type),
+      seq("newtype", $.properName, "::", $.type),
+      seq("type", $.properName, "::", $.type),
+      // 
+      seq("derive", $.instHead),
+      seq("derive", "newtype", $.instHead),
+      seq($.ident, "::", $.type),
+      seq($.ident, manyOrEmpty($.binderAtom), $.guardedDecl),
+      $.fixity,
+      seq("foreign", "import", $.ident, "::", $.type),
+      seq("foreign", "import", "data", $.properName, "::", $.type),
+      seq("type", "role", $.properName, many($.role)),
     ),
 
-    exprWhere : $ => choice(
-      $.expr,
-      seq($.expr, "where", $.begin, manySep($.letBinding, $.sep), $.end),
+    dataHead : $ => seq("data", $.properName, manyOrEmpty($.typeVarBinding)), 
+    typeHead : $ => seq("type", $.properName, manyOrEmpty($.typeVarBinding)), 
+    newtypeHead : $ => seq("newtype", $.properName, manyOrEmpty($.typeVarBinding)), 
+
+    dataCtor : $ => seq($.properName, manyOrEmpty($.typeAtom)),
+
+    classHead : $ => choice(
+      seq("class", $.classNameAndFundeps),
+      seq("class", $.constraints, "<=", $.classNameAndFundeps),
     ),
 
-    expr : $ => seq(
-      $.expr1,
-      optional(seq("::", $.type))
+    classNameAndFundeps  : $ => seq(
+      $.properName, manyOrEmpty($.typeVarBinding), optional($.fundeps)
     ),
+
+    fundeps : $ => seq("|", sep($.fundep, ",")),
+    fundep : $ => choice(
+      seq("->", many($.ident)),
+      seq(many($.ident), "->", many($.ident)),
+    ),
+
+    classMember : $ => seq($.ident, "::", $.type),
+
+    instHead : $ => seq("instance", optional(seq($.ident, "::")), optional(seq($.constraints, "=>")), $.qualProperName, manyOrEmpty($.typeAtom)),
+
+    constraints : $ => prec(-1, choice(
+      $.constraint,
+      seq("(", sep($.constraint, ","), ")")
+    )),
+
+    constraint : $ => choice(
+      seq($.qualProperName, manyOrEmpty($.typeAtom)),
+      seq("(", $.constraint, ")"),
+    ),
+
+    instBinding : $ => choice(
+      seq($.ident, "::", $.type),
+      seq($.ident, manyOrEmpty($.binderAtom), $.guardedDecl),
+    ),
+
+    fixity : $ => seq(
+      $.infix, $.int, choice($.qualIdent,
+                             $.qualProperName,
+                             seq("type", $.qualProperName))
+    ),
+
+    infix : $ => choice("infix", "infixl", "infixr"),
+
+    role : $ => choice("nominal", "representational", "phantom"),
+
+    // Expressions 
+    expr : $ => prec.left(0, seq($.expr1, optional(seq("::", $.type)))),
 
     expr1 : $ => choice(
       $.expr2,
       seq($.expr1, $.qualOp, $.expr2)
     ),
 
-    expr2 : $ => choice(
+    expr2 : $ => prec(1, choice(
       $.expr3,
       seq($.expr2, "`", $.exprBacktick, "`", $.expr3)
-    ),
+    )),
     
     exprBacktick : $ => choice(
       $.expr3,
       seq($.exprBacktick, $.qualOp, $.expr3),
     ),
 
-    expr3 : $ => choice(
+    expr3 : $ => prec(2, choice(
       $.expr4,
       seq("-", $.expr3),
-    ),
+    )),
 
-    expr4 : $ => choice(
+    expr4 : $ => prec(3, choice(
       $.expr5,
       seq($.expr4, $.expr5),
-    ),
+    )),
 
     expr5 : $ => choice(
       $.expr6,
@@ -206,7 +191,7 @@ module.exports = grammar({
       // There are more case variants here, but they're deprecated, so not gonna bother right now.
     ),
 
-    expr6 : $ => seq($.expr7, optional(seq("{", optional(sep($.recordUpdateOrLabel, ",")), "}"))),
+    expr6 : $ => prec.left(1, seq($.expr7, optional(seq("{", optional(sep($.recordUpdateOrLabel, ",")), "}")))),
 
     expr7 : $ => seq($.exprAtom, repeat(seq(".", $.exprAtom))),
     
@@ -223,6 +208,11 @@ module.exports = grammar({
       delim("[", $.expr, ",", "]"),
       delim("{", $.recordLabel, ",", "}"),
       seq("(", $.expr, ")"),
+    ),
+
+    exprWhere : $ => choice(
+      $.expr,
+      seq($.expr, "where", $.begin, manySep($.letBinding, $.sep), $.end),
     ),
 
     recordLabel : $ => seq(
@@ -304,13 +294,13 @@ module.exports = grammar({
       seq($.binder, "<-", $.expr),
     ),
 
-    binder : $ => seq($.binder1, optional(seq("::", $.type))),
+    binder : $ => prec(-1, seq($.binder1, optional(seq("::", $.type)))),
 
-    binder1 : $ => choice($.binder2, seq($.binder1, $.qualOp, $.binder2)),
+    binder1 : $ => prec(-1, choice($.binder2, seq($.binder1, $.qualOp, $.binder2))),
 
-    binder2 : $ => choice(many($.binder2), seq("-", $.number)),
+    binder2 : $ => prec(-1, choice(many($.binderAtom), seq("-", $.number))),
 
-    binderAtom : $ => choice(
+    binderAtom : $ => prec(-1, choice(
       "_",
       $.ident,
       seq($.ident, "@", $.binderAtom),
@@ -322,133 +312,138 @@ module.exports = grammar({
       delim("[", $.binder, ",", "]"),
       delim("{", $.recordBinder, ",", "}"),
       seq("(", $.binder, ")"),
-    ),
+    )),
     
-    recordBinder : $ => seq(
+    recordBinder : $ => prec(-1, seq(
       $.label, choice(
           seq(),
           // seq("=", $.binder), // Error
           seq(":", $.binder),
       )
-    ),
+    )),
 
     // -------------------------------------------------------
-    moduleHeader : $ => seq("module", $.moduleName, optional($.exports), "where", $.begin, $.moduleImports),
 
-    moduleBody : $ => seq(optional($.moduleDecls), $.end),
+    // Types
+    // Not sure if this works
+    type : $ => prec.right(0, seq($.type1, optional(seq("::", $.type)))),
+    type1 : $ => prec.right(0, seq($.type2, optional(seq("forall", many($.typeVarBinding), ".", $.type1)))),
+    type2 : $ => prec.right(0, seq($.type3, optional(choice( seq($.type3, '->', $.type1)
+                                                           , seq($.type3, '=>', $.type1)
+                                                           )))),
+    type3 : $ => prec.right(0, choice($.type4, seq($.type3, $.qualOp, $.type4))),
+    type4 : $ => prec.right(0, choice($.type5, seq("-", $.int))),
+    type5 : $ => prec.right(2, repeat1($.typeAtom)),
 
-    moduleImports : $ => seq(repeat(seq($.importDecl, $.sep)), $.end),
-
-    moduleDecls : $ => manySep($.moduleDecl, $.end),
-
-    moduleDecl : $ => choice($.importDecl, sep($.decl, $.declElse)),
-
-    declElse : $ => seq("else", optional($.sep)),
-
-    exports : $ => seq("(", sep($.export_, ","), ")"),
-
-    export_ : $ => choice(
+    typeAtom : $ => choice(
+      "_",
       $.ident,
-      $.symbol,
-      seq($.properName, optional($.dataMembers)),
-      seq("type", $.symbol),
-      seq("class", $.properName),
-      seq("module", $.moduleName),
+      $.qualProperName,
+      $.qualSymbol,
+      $.string,
+      $.int,
+      $.hole,
+      '(->)', // Not sure this is right
+      seq("{", optional($.row), "}"),
+      seq("(", optional($.row), ")"),
+      seq("(", $.type1, ")"),
+      seq("(", $.typeKindedAtom, "::", $.type, ")"),
     ),
 
-    dataMembers : $ => choice(
-      "(..)",
-      seq("(", ")"),
-      seq("(", sep($.properName, ","), ")"),
+    // = Comment from `grammar.y` =
+    // Due to a conflict between row syntax and kinded type syntax, we require
+    // kinded type variables to be wrapped in parens. Thus `(a :: Foo)` is always a
+    // row, and to annotate `a` with kind `Foo`, one must use `((a) :: Foo)`.
+    typeKindedAtom : $ => choice(
+      "_",
+      $.qualProperName,
+      $.qualSymbol,
+      $.int,
+      $.hole,
+      '(->)', // Not sure this is right
+      seq("{", optional($.row), "}"),
+      seq("(", optional($.row), ")"),
+      seq("(", $.type1, ")"),
     ),
 
-    importDecl : $ => seq("import", $.moduleName, optional($.imports), optional(seq("as", $.moduleName))),
+    row : $ => choice(
+      seq("|", $.type),
+      seq(sep($.rowLabel, ","), optional(seq("|", $.type))),
+    ),
 
-    imports : $ => seq(optional("hiding"), "(", sep($.import_, ","), ")"),
+    rowLabel : $ => seq($.label, "::", $.type),
 
-    import_ : $ => choice(
+    typeVarBinding : $ => choice(
       $.ident,
-      $.symbol,
-      seq($.properName, optional($.dataMembers)),
-      seq("type", $.symbol),
-      seq("classs", $.properName),
+      seq("(", $.ident, "::", $.type, ")"),
     ),
 
-    decl : $ => choice(
-      seq($.dataHead, optional(seq("=", sep($.dataCtor, "|")))),
-      seq($.typeHead, "=", $.type),
-      seq($.newtypeHead, "=", $.properName, $.type),
-      seq($.classHead, optional(seq(
-        "where", $.begin, manySep($.classMember, $.sep), $.end))
-      ),
-      seq($.instHead, optional(seq(
-        "where", $.begin, manySep($.instBinding, $.sep), $.end))
-      ),
-      //
-      seq("data", $.properName, "::", $.type),
-      seq("newtype", $.properName, "::", $.type),
-      seq("type", $.properName, "::", $.type),
-      // 
-      seq("derive", $.instHead),
-      seq("derive", "newtype", $.instHead),
-      seq($.ident, "::", $.type),
-      seq($.ident, manyOrEmpty($.binderAtom), $.guardedDecl),
-      $.fixity,
-      seq("foreign", "import", $.ident, "::", $.type),
-      seq("foreign", "import", "data", $.properName, "::", $.type),
-      seq("type", "role", $.properName, many($.role)),
+    forall : $ => choice(
+      "forall", // TODO: There's a Unicode variant here, not sure it's gonna work
     ),
 
-    dataHead : $ => seq("data", $.properName, manyOrEmpty($.typeVarBinding)), 
-    typeHead : $ => seq("type", $.properName, manyOrEmpty($.typeVarBinding)), 
-    newtypeHead : $ => seq("newtype", $.properName, manyOrEmpty($.typeVarBinding)), 
+    // General things, have to be lower down to aid the parser
+    moduleName : $ => choice(UPPER, QUAL_UPPER),
 
-    dataCtor : $ => seq($.properName, manyOrEmpty($.typeAtom)),
+    qualProperName : $ => prec(-1, choice(UPPER, QUAL_UPPER)),
+    properName : $ => choice(UPPER),
 
-    classHead : $ => choice(
-      seq("class", $.classNameAndFundeps),
-      seq("class", $.constraints, "<=", $.classNameAndFundeps),
-    ),
+    qualIdent : $ => prec(-1, choice(LOWER, QUAL_LOWER, 'as', 'hiding', 'role', 'nominal', 'representational', 'phantom')),
+    ident : $ => choice(LOWER, 'as', 'hiding', 'role', 'nominal', 'representational', 'phantom'),
 
-    classNameAndFundeps  : $ => seq(
-      $.properName, manyOrEmpty($.typeVarBinding), optional($.fundeps)
-    ),
+    qualOp : $ => prec(-1, choice(OPERATOR, QUAL_OPERATOR, '<=', '-', ':')),
+    op : $ => choice(OPERATOR, '<=', '-', ':'),
 
-    fundeps : $ => seq("|", sep($.fundep, ",")),
-    fundep : $ => choice(
-      seq("->", many($.ident)),
-      seq(many($.ident), "->", many($.ident)),
-    ),
+    qualSymbol : $ => choice(SYMBOL, QUAL_SYMBOL, '(..)'),
+    symbol : $ => choice(SYMBOL, '(..)'),
 
-    classMember : $ => seq($.ident, "::", $.type),
+    label : $ => choice( LOWER 
+                       , LIT_STRING 
+                       , LIT_RAW_STRING 
+                       , 'ado' 
+                       , 'as' 
+                       , 'case' 
+                       , 'class' 
+                       , 'data' 
+                       , 'derive' 
+                       , 'do' 
+                       , 'else' 
+                       , 'false' 
+                       , 'forall' 
+                       , 'foreign' 
+                       , 'hiding' 
+                       , 'import' 
+                       , 'if' 
+                       , 'in' 
+                       , 'infix' 
+                       , 'infixl' 
+                       , 'infixr' 
+                       , 'instance' 
+                       , 'let' 
+                       , 'module' 
+                       , 'newtype' 
+                       , 'nominal' 
+                       , 'of' 
+                       , 'phantom' 
+                       , 'representational' 
+                       , 'role' 
+                       , 'then' 
+                       , 'true' 
+                       , 'type' 
+                       , 'where'
+                       ),
 
-    instHead : $ => seq("instance", optional(seq($.ident, "::")), optional(seq($.constraints, "=>")), $.qualProperName, manyOrEmpty($.typeAtom)),
+    hole : $ => LIT_HOLE,
 
-    constraints : $ => choice(
-      $.constraint,
-      seq("(", sep($.constraint, ","), ")")
-    ),
+    string : $ => choice(LIT_STRING, LIT_RAW_STRING),
 
-    constraint : $ => choice(
-      seq($.qualProperName, manyOrEmpty($.typeAtom)),
-      seq("(", $.constraint, ")"),
-    ),
+    char : $ => LIT_CHAR,
 
-    instBinding : $ => choice(
-      seq($.ident, "::", $.type),
-      seq($.ident, manyOrEmpty($.binderAtom), $.guardedDecl),
-    ),
+    number : $ => choice(LIT_NUMBER, LIT_INT),
 
-    fixity : $ => seq(
-      $.infix, $.int, choice($.qualIdent,
-                             $.qualProperName,
-                             seq("type", $.qualProperName))
-    ),
+    int : $ => LIT_INT,
 
-    infix : $ => choice("infix", "infixl", "infixr"),
-
-    role : $ => choice("nominal", "representational", "phantom"),
-
-    module : $ => seq($.moduleHeader, $.moduleBody),
+    boolean : $ => choice("true", "false"),
+  
   }
 });
