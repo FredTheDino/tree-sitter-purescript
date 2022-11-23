@@ -53,9 +53,9 @@ module.exports = grammar({
   name : "purescript",
 
   externals: $ => [
-    $.begin,
-    $.end,
-    $.cont,
+    $._begin,
+    $._end,
+    $._cont,
   ],
 
   rules : {
@@ -63,7 +63,7 @@ module.exports = grammar({
       "module",
       field("name", sep_by(".", $.properName)),
       "where",
-      $.cont,
+      $._cont,
       sep_by($._decl),
     ),
 
@@ -74,7 +74,7 @@ module.exports = grammar({
       $.newtypeDecl,
       $.classDecl,
       $.function_definition,
-    ), $.cont),
+    ), $._cont),
 
     data : $ => seq(
       "data",
@@ -122,9 +122,9 @@ module.exports = grammar({
 
       optional(seq(
         "where",
-        $.begin,
-        manySep(seq($._ident, "::", $._type), $.cont),
-        $.end
+        $._begin,
+        manySep(seq($._ident, "::", $._type), $._cont),
+        $._end
       )),
     ),
 

@@ -19,19 +19,7 @@
       "required": false,
       "types": [
         {
-          "type": "begin",
-          "named": true
-        },
-        {
           "type": "constraint",
-          "named": true
-        },
-        {
-          "type": "cont",
-          "named": true
-        },
-        {
-          "type": "end",
           "named": true
         },
         {
@@ -180,14 +168,10 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "classDecl",
-          "named": true
-        },
-        {
-          "type": "cont",
           "named": true
         },
         {
@@ -366,24 +350,12 @@
     "named": false
   },
   {
-    "type": "begin",
-    "named": true
-  },
-  {
     "type": "class",
     "named": false
   },
   {
-    "type": "cont",
-    "named": true
-  },
-  {
     "type": "data",
     "named": false
-  },
-  {
-    "type": "end",
-    "named": true
   },
   {
     "type": "module",

@@ -48,7 +48,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "cont"
+          "name": "_cont"
         },
         {
           "type": "SEQ",
@@ -103,7 +103,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "cont"
+          "name": "_cont"
         }
       ]
     },
@@ -462,7 +462,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "begin"
+                  "name": "_begin"
                 },
                 {
                   "type": "SEQ",
@@ -491,7 +491,7 @@
                         "members": [
                           {
                             "type": "SYMBOL",
-                            "name": "cont"
+                            "name": "_cont"
                           },
                           {
                             "type": "SEQ",
@@ -517,7 +517,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "end"
+                  "name": "_end"
                 }
               ]
             },
@@ -1119,15 +1119,15 @@
   "externals": [
     {
       "type": "SYMBOL",
-      "name": "begin"
+      "name": "_begin"
     },
     {
       "type": "SYMBOL",
-      "name": "end"
+      "name": "_end"
     },
     {
       "type": "SYMBOL",
-      "name": "cont"
+      "name": "_cont"
     }
   ],
   "inline": [],

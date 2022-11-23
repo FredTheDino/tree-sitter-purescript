@@ -10,10 +10,8 @@ fun a = a
 
 (module
   name: (properName)
-  (cont)
   (function_definition
-    (expression))
-  (cont))
+    (expression)))
 
 ================================================================================
 basic: module name with dots
@@ -27,8 +25,7 @@ module A.B.C.D where
   name: (properName)
   name: (properName)
   name: (properName)
-  name: (properName)
-  (cont))
+  name: (properName))
 
 ================================================================================
 basic: bigger module
@@ -52,30 +49,23 @@ fun a = a { a = 1 }
 
 (module
   name: (properName)
-  (cont)
   (function_definition
     (expression))
-  (cont)
   (function_definition
     (expression))
-  (cont)
   (function_definition
     (expression))
-  (cont)
   (function_definition
     (expression
       (expression)))
-  (cont)
   (function_definition
     (expression
       (expression)
       (expression)))
-  (cont)
   (function_definition
     (expression
       (expression)
-      (expression)))
-  (cont))
+      (expression))))
 
 ================================================================================
 basic: data definition
@@ -89,7 +79,6 @@ data A = A | B | C
 
 (module
   (properName)
-  (cont)
   (dataDecl
     (properName)
     (dataCtor
@@ -97,8 +86,7 @@ data A = A | B | C
     (dataCtor
       (properName))
     (dataCtor
-      (properName)))
-  (cont))
+      (properName))))
 
 ================================================================================
 basic: data definition with extra info
@@ -116,7 +104,6 @@ data A a =
 
 (module
   (properName)
-  (cont)
   (dataDecl
     (properName)
     (typeVarBinding)
@@ -132,8 +119,7 @@ data A a =
       (typeAtom)
       (typeAtom))
     (dataCtor
-      (properName)))
-  (cont))
+      (properName))))
 
 ================================================================================
 basic: type definition
@@ -147,11 +133,9 @@ type A = A
 
 (module
   (properName)
-  (cont)
   (typeDecl
     (properName)
-    (properName))
-  (cont))
+    (properName)))
 
 ================================================================================
 basic: newtype definition
@@ -165,12 +149,10 @@ newtype A = A abc
 
 (module
   (properName)
-  (cont)
   (newtypeDecl
     (properName)
     (properName)
-    (typeVarBinding))
-  (cont))
+    (typeVarBinding)))
 
 ================================================================================
 basic: simple class
@@ -184,10 +166,8 @@ class A
 
 (module
   (properName)
-  (cont)
   (classDecl
-    (properName))
-  (cont))
+    (properName)))
 
 ================================================================================
 basic: simple class with member
@@ -202,13 +182,10 @@ class B where
 
 (module
   (properName)
-  (cont)
   (classDecl
     (properName)
-    (begin)
-    (properName)
-    (end))
-  (MISSING cont))
+    (properName))
+  (MISSING _cont))
 
 ================================================================================
 basic: simple class with members
@@ -216,7 +193,7 @@ basic: simple class with members
 
 module A where
 
-class A a => B a where
+class A a <= B a where
   a :: Int
   b :: Int
   c :: Int
@@ -225,17 +202,10 @@ class A a => B a where
 
 (module
   (properName)
-  (cont)
   (classDecl
     (properName)
     (typeVarBinding)
-    (ERROR
-      (UNEXPECTED '>'))
-    (begin)
     (properName)
-    (cont)
     (properName)
-    (cont)
-    (properName)
-    (end))
-  (MISSING cont))
+    (properName))
+  (MISSING _cont))
