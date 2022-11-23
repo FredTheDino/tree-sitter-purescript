@@ -12,7 +12,8 @@ fun a = a
   name: (properName)
   (cont)
   (function_definition
-    (expression)))
+    (expression))
+  (cont))
 
 ================================================================================
 basic: module name with dots
@@ -54,21 +55,27 @@ fun a = a { a = 1 }
   (cont)
   (function_definition
     (expression))
+  (cont)
   (function_definition
     (expression))
+  (cont)
   (function_definition
     (expression))
+  (cont)
   (function_definition
     (expression
       (expression)))
+  (cont)
   (function_definition
     (expression
       (expression)
       (expression)))
+  (cont)
   (function_definition
     (expression
       (expression)
-      (expression))))
+      (expression)))
+  (cont))
 
 ================================================================================
 basic: data definition
@@ -90,8 +97,8 @@ data A = A | B | C
     (dataCtor
       (properName))
     (dataCtor
-      (properName))
-    (cont)))
+      (properName)))
+  (cont))
 
 ================================================================================
 basic: data definition with extra info
@@ -125,8 +132,8 @@ data A a =
       (typeAtom)
       (typeAtom))
     (dataCtor
-      (properName))
-    (cont)))
+      (properName)))
+  (cont))
 
 ================================================================================
 basic: type definition
@@ -143,7 +150,8 @@ type A = A
   (cont)
   (typeDecl
     (properName)
-    (properName)))
+    (properName))
+  (cont))
 
 ================================================================================
 basic: newtype definition
@@ -161,4 +169,73 @@ newtype A = A abc
   (newtypeDecl
     (properName)
     (properName)
-    (typeVarBinding)))
+    (typeVarBinding))
+  (cont))
+
+================================================================================
+basic: simple class
+================================================================================
+
+module A where
+
+class A
+
+--------------------------------------------------------------------------------
+
+(module
+  (properName)
+  (cont)
+  (classDecl
+    (properName))
+  (cont))
+
+================================================================================
+basic: simple class with member
+================================================================================
+
+module A where
+
+class B where
+  a :: Int
+
+--------------------------------------------------------------------------------
+
+(module
+  (properName)
+  (cont)
+  (classDecl
+    (properName)
+    (begin)
+    (properName)
+    (end))
+  (MISSING cont))
+
+================================================================================
+basic: simple class with members
+================================================================================
+
+module A where
+
+class A a => B a where
+  a :: Int
+  b :: Int
+  c :: Int
+
+--------------------------------------------------------------------------------
+
+(module
+  (properName)
+  (cont)
+  (classDecl
+    (properName)
+    (typeVarBinding)
+    (ERROR
+      (UNEXPECTED '>'))
+    (begin)
+    (properName)
+    (cont)
+    (properName)
+    (cont)
+    (properName)
+    (end))
+  (MISSING cont))

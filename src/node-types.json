@@ -1,5 +1,74 @@
 [
   {
+    "type": "classDecl",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "properName",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "begin",
+          "named": true
+        },
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "cont",
+          "named": true
+        },
+        {
+          "type": "end",
+          "named": true
+        },
+        {
+          "type": "fundep",
+          "named": true
+        },
+        {
+          "type": "properName",
+          "named": true
+        },
+        {
+          "type": "typeVarBinding",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "typeAtom",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "dataCtor",
     "named": true,
     "fields": {
@@ -45,10 +114,6 @@
       "required": true,
       "types": [
         {
-          "type": "cont",
-          "named": true
-        },
-        {
           "type": "dataCtor",
           "named": true
         },
@@ -90,6 +155,11 @@
     }
   },
   {
+    "type": "fundep",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "module",
     "named": true,
     "fields": {
@@ -112,6 +182,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "classDecl",
+          "named": true
+        },
         {
           "type": "cont",
           "named": true
@@ -252,11 +326,23 @@
     "named": false
   },
   {
+    "type": "->",
+    "named": false
+  },
+  {
     "type": ".",
     "named": false
   },
   {
     "type": ":",
+    "named": false
+  },
+  {
+    "type": "::",
+    "named": false
+  },
+  {
+    "type": "<=",
     "named": false
   },
   {
@@ -280,12 +366,24 @@
     "named": false
   },
   {
+    "type": "begin",
+    "named": true
+  },
+  {
+    "type": "class",
+    "named": false
+  },
+  {
     "type": "cont",
     "named": true
   },
   {
     "type": "data",
     "named": false
+  },
+  {
+    "type": "end",
+    "named": true
   },
   {
     "type": "module",

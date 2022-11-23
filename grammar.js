@@ -64,16 +64,17 @@ module.exports = grammar({
       field("name", sep_by(".", $.properName)),
       "where",
       $.cont,
-      repeat($._decl),
+      sep_by($._decl),
     ),
 
     //
-    _decl : $ => choice(
+    _decl : $ => seq(choice(
       $.dataDecl,
       $.typeDecl,
       $.newtypeDecl,
+      $.classDecl,
       $.function_definition,
-    ),
+    ), $.cont),
 
     data : $ => seq(
       "data",
@@ -89,7 +90,6 @@ module.exports = grammar({
       manyOrEmpty($.typeVarBinding),
       "=",
       sep($.dataCtor, "|"),
-      $.cont,
     ),
     dataCtor : $ => seq(
       field("constructor", $.properName),
@@ -113,6 +113,36 @@ module.exports = grammar({
       $._type,
     ),
 
+    classDecl : $ => seq(
+      "class",
+      optional(seq($._constraints, "<=")),
+      field("name", $.properName),
+      manyOrEmpty($.typeVarBinding),
+      optional($._fundeps),
+
+      optional(seq(
+        "where",
+        $.begin,
+        manySep(seq($._ident, "::", $._type), $.cont),
+        $.end
+      )),
+    ),
+
+    _fundeps : $ => seq("|", sep($.fundep, ",")),
+    fundep : $ => choice(
+      seq("->", many($._ident)),
+      seq(many($._ident), "->", many($._ident)),
+    ),
+
+    _constraints : $ => choice(
+      $.constraint,
+      seq("(", sep($.constraint, ","), ")")
+    ),
+
+    constraint : $ => prec(1, choice(
+      seq($._qualProperName, manyOrEmpty($.typeAtom)),
+      seq("(", $.constraint, ")"),
+    )),
 
     type_variable : $ => LOWER,
 
