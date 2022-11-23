@@ -133,6 +133,10 @@
         {
           "type": "function_definition",
           "named": true
+        },
+        {
+          "type": "typeDecl",
+          "named": true
         }
       ]
     }
@@ -146,6 +150,46 @@
     "type": "typeAtom",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "typeDecl",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "properName",
+            "named": true
+          },
+          {
+            "type": "typeVarBinding",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "properName",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "typeVarBinding",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "typeVarBinding",
@@ -211,6 +255,10 @@
   },
   {
     "type": "module",
+    "named": false
+  },
+  {
+    "type": "type",
     "named": false
   },
   {

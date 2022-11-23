@@ -70,6 +70,7 @@ module.exports = grammar({
     //
     _decl : $ => choice(
       $.dataDecl,
+      $.typeDecl,
       $.function_definition,
     ),
 
@@ -92,6 +93,14 @@ module.exports = grammar({
     dataCtor : $ => seq(
       field("name", $.properName),
       manyOrEmpty($.typeAtom),
+    ),
+
+    typeDecl : $ => seq(
+      "type",
+      field("name", $.properName),
+      manyOrEmpty($.typeVarBinding),
+      "=",
+      field("body", $._type),
     ),
 
     type_variable : $ => LOWER,
