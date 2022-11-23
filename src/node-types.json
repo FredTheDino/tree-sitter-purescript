@@ -3,7 +3,7 @@
     "type": "dataCtor",
     "named": true,
     "fields": {
-      "name": {
+      "constructor": {
         "multiple": false,
         "required": true,
         "types": [
@@ -29,20 +29,6 @@
     "type": "dataDecl",
     "named": true,
     "fields": {
-      "body": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "dataCtor",
-            "named": true
-          },
-          {
-            "type": "|",
-            "named": false
-          }
-        ]
-      },
       "name": {
         "multiple": false,
         "required": true,
@@ -60,6 +46,10 @@
       "types": [
         {
           "type": "cont",
+          "named": true
+        },
+        {
+          "type": "dataCtor",
           "named": true
         },
         {
@@ -135,7 +125,51 @@
           "named": true
         },
         {
+          "type": "newtypeDecl",
+          "named": true
+        },
+        {
           "type": "typeDecl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "newtypeDecl",
+    "named": true,
+    "fields": {
+      "constructor": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "properName",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "properName",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "properName",
+          "named": true
+        },
+        {
+          "type": "typeVarBinding",
           "named": true
         }
       ]
@@ -255,6 +289,10 @@
   },
   {
     "type": "module",
+    "named": false
+  },
+  {
+    "type": "newtype",
     "named": false
   },
   {

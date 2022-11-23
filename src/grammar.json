@@ -72,6 +72,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "newtypeDecl"
+        },
+        {
+          "type": "SYMBOL",
           "name": "function_definition"
         }
       ]
@@ -190,33 +194,29 @@
           "value": "="
         },
         {
-          "type": "FIELD",
-          "name": "body",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "dataCtor"
-              },
-              {
-                "type": "REPEAT",
-                "content": {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": "|"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "dataCtor"
-                    }
-                  ]
-                }
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "dataCtor"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "|"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "dataCtor"
+                  }
+                ]
               }
-            ]
-          }
+            }
+          ]
         },
         {
           "type": "SYMBOL",
@@ -229,7 +229,7 @@
       "members": [
         {
           "type": "FIELD",
-          "name": "name",
+          "name": "constructor",
           "content": {
             "type": "SYMBOL",
             "name": "properName"
@@ -303,6 +303,59 @@
             "type": "SYMBOL",
             "name": "_type"
           }
+        }
+      ]
+    },
+    "newtypeDecl": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "newtype"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "properName"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "REPEAT1",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "typeVarBinding"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "FIELD",
+          "name": "constructor",
+          "content": {
+            "type": "SYMBOL",
+            "name": "properName"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_type"
         }
       ]
     },

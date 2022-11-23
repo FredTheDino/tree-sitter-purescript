@@ -71,6 +71,7 @@ module.exports = grammar({
     _decl : $ => choice(
       $.dataDecl,
       $.typeDecl,
+      $.newtypeDecl,
       $.function_definition,
     ),
 
@@ -87,11 +88,11 @@ module.exports = grammar({
       field("name", $.properName),
       manyOrEmpty($.typeVarBinding),
       "=",
-      field("body", sep($.dataCtor, "|")),
+      sep($.dataCtor, "|"),
       $.cont,
     ),
     dataCtor : $ => seq(
-      field("name", $.properName),
+      field("constructor", $.properName),
       manyOrEmpty($.typeAtom),
     ),
 
@@ -102,6 +103,16 @@ module.exports = grammar({
       "=",
       field("body", $._type),
     ),
+
+    newtypeDecl : $ => seq(
+      "newtype",
+      field("name", $.properName),
+      manyOrEmpty($.typeVarBinding),
+      "=",
+      field("constructor", $.properName),
+      $._type,
+    ),
+
 
     type_variable : $ => LOWER,
 

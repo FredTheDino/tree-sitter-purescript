@@ -144,3 +144,21 @@ type A = A
   (typeDecl
     (properName)
     (properName)))
+
+================================================================================
+basic: newtype definition
+================================================================================
+
+module A where
+
+newtype A = A abc
+
+--------------------------------------------------------------------------------
+
+(module
+  (properName)
+  (cont)
+  (newtypeDecl
+    (properName)
+    (properName)
+    (typeVarBinding)))
