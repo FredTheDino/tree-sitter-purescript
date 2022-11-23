@@ -85,7 +85,45 @@ data A = A | B | C
   (cont)
   (dataDecl
     (properName)
-    (dataCtor (properName))
-    (dataCtor (properName))
-    (dataCtor (properName))
+    (dataCtor
+      (properName))
+    (dataCtor
+      (properName))
+    (dataCtor
+      (properName))
+    (cont)))
+
+================================================================================
+basic: data definition with extra info
+================================================================================
+
+module A where
+
+data A a =
+  A a a
+  | B a
+  | C a a
+  | D
+
+--------------------------------------------------------------------------------
+
+(module
+  (properName)
+  (cont)
+  (dataDecl
+    (properName)
+    (typeVarBinding)
+    (dataCtor
+      (properName)
+      (typeAtom)
+      (typeAtom))
+    (dataCtor
+      (properName)
+      (typeAtom))
+    (dataCtor
+      (properName)
+      (typeAtom)
+      (typeAtom))
+    (dataCtor
+      (properName))
     (cont)))
