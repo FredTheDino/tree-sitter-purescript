@@ -1,28 +1,72 @@
 [
   {
-    "type": "data",
+    "type": "dataCtor",
     "named": true,
     "fields": {
-      "arguments": {
-        "multiple": true,
-        "required": false,
+      "name": {
+        "multiple": false,
+        "required": true,
         "types": [
           {
-            "type": "type_variable",
+            "type": "properName",
             "named": true
           }
         ]
-      },
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "typeAtom",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "dataDecl",
+    "named": true,
+    "fields": {
       "body": {
         "multiple": true,
         "required": true,
         "types": [
           {
+            "type": "dataCtor",
+            "named": true
+          },
+          {
             "type": "|",
             "named": false
           }
         ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "properName",
+            "named": true
+          }
+        ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "cont",
+          "named": true
+        },
+        {
+          "type": "typeVarBinding",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -43,58 +87,32 @@
   {
     "type": "function_definition",
     "named": true,
-    "fields": {
-      "arguments": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "@",
-            "named": false
-          },
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      },
-      "body": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
     }
-  },
-  {
-    "type": "identifier",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "module",
     "named": true,
     "fields": {
       "name": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
-            "type": "module_name",
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": "properName",
             "named": true
           }
         ]
@@ -102,10 +120,14 @@
     },
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
-          "type": "data",
+          "type": "cont",
+          "named": true
+        },
+        {
+          "type": "dataDecl",
           "named": true
         },
         {
@@ -116,7 +138,17 @@
     }
   },
   {
-    "type": "module_name",
+    "type": "properName",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "typeAtom",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "typeVarBinding",
     "named": true,
     "fields": {}
   },
@@ -127,6 +159,10 @@
   },
   {
     "type": "(",
+    "named": false
+  },
+  {
+    "type": "(..)",
     "named": false
   },
   {
@@ -160,6 +196,14 @@
   {
     "type": "]",
     "named": false
+  },
+  {
+    "type": "_",
+    "named": false
+  },
+  {
+    "type": "cont",
+    "named": true
   },
   {
     "type": "data",

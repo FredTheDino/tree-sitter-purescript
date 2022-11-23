@@ -21,77 +21,142 @@
 //  - operators
 //  - more...
 
-const upper = /[A-Z][A-Za-z0-9_]*/
-const lower = /[a-z][A-Za-z0-9_]*/
-const number = /[0-9]+/
+const LOWER              = /[a-z][A-Za-z0-9_]*/
+const QUAL_LOWER         = /([A-Z][A-Za-z0-9_]\.)+[a-z][A-Za-z0-9_]*/
+const UPPER              = /[A-Z][A-Za-z0-9_]*/
+const QUAL_UPPER         = /([A-Z][A-Za-z0-9_]\.)+[A-Z][A-Za-z0-9_]*/
+const SYMBOL             = /[a-z]+/ // No idea what to put here, I'm guessing its something like this
+const QUAL_SYMBOL        = /([A-Z][A-Za-z0-9_]\.)+[a-z]+/
+const OPERATOR           = /[<>?!#@£$+\-*\/]/ // No idea what to put here, I'm guessing its something like this
+const QUAL_OPERATOR      = /([A-Z][A-Za-z0-9_]\.)+[<>?!#@£$+\-*\/]+/
+const LIT_HOLE           = /_[A-Za-z0-9_]+/
+const LIT_CHAR           = /'.'/
+const LIT_STRING         = /".*"/
+const LIT_RAW_STRING     = /""".*"""/ // This is wrong
+const LIT_INT            = /[0-9]+/
+const LIT_NUMBER         = /[0-9]+\.[0-9]*/ // This is wrong
 
-const record_field = lower
 
 const sep_by = (sep, ...thing) => seq(seq(...thing), repeats(sep, ...thing))
 const optionals = (...thing) => optional(seq(...thing))
 const repeats = (...thing) => repeat(seq(...thing))
 
+const many = (...things) => repeat1(seq(...things))
+const manySep = (thing, sep) => seq(thing, repeat(seq(sep, thing)))
+const manySepOrEmpty = (thing, sep) => optional(manySep(thing, sep))
+const manyOrEmpty = (...things) => optional(many(...things))
+const sep = (a, s) => seq(a, repeat(seq(s, a)))
+const delim = (b, t, s, d) => seq(b, optional(sep(t, s)), d)
+
+
 module.exports = grammar({
   name : "purescript",
+
+  externals: $ => [
+    $.begin,
+    $.end,
+    $.cont,
+  ],
 
   rules : {
     module : $ => seq(
       "module",
-      field("name", $.module_name),
+      field("name", sep_by(".", $.properName)),
       "where",
-      repeat($._top_definition),
+      $.cont,
+      repeat($._decl),
     ),
 
-    module_name : $ => sep_by(".", upper),
-
     //
-    _top_definition : $ => choice(
-      $.data,
+    _decl : $ => choice(
+      $.dataDecl,
       $.function_definition,
     ),
 
     data : $ => seq(
       "data",
-      field("name", upper),
-      field("arguments", repeat($.type_variable)),
+      field("name", UPPER),
+      field("params", repeat($.type_variable)),
       "=",
-      field("body", sep_by("|", upper, $._type)),
+      field("body", sep_by("|", $.properName, $._type)),
     ),
 
-    type_variable : $ => lower,
+    dataDecl : $ => seq(
+      "data",
+      field("name", $.properName),
+      manyOrEmpty($.typeVarBinding),
+      "=",
+      field("body", sep($.dataCtor, "|")),
+      $.cont,
+    ),
+    dataCtor : $ => seq(
+      field("name", $.properName),
+      manyOrEmpty($.typeAtom),
+    ),
+
+    type_variable : $ => LOWER,
 
     _type : $ => choice(
-      lower,
-      upper,
+      $.properName,
+      $.typeVarBinding,
     ),
 
     function_definition : $ => seq(
-      field("name", $.identifier),
-      field("arguments", repeat($._argument)),
+      $._ident,
+      repeat($._argument),
       "=",
-      field("body", $.expression),
+      $.expression,
     ),
 
-    identifier : $ => lower,
+    _ident : $ => LOWER,
 
     _pattern : $ => choice(
-      seq($.identifier, "@", $._pattern),
+      seq($._ident, "@", $._pattern),
     ),
 
     _argument : $ => choice(
       $._pattern,
-      $.identifier,
+      $._ident,
     ),
 
     expression : $ => choice(
-      lower,
-      number,
+      $._ident,
+      LIT_INT,
+      LIT_NUMBER,
       seq("{", "}"),
-      seq("(", repeats(record_field, optionals(":", $.expression)), ")"),
+      seq("(", repeats(LOWER, optionals(":", $.expression)), ")"),
       seq("[", optional(sep_by(",", $.expression)), "]"),
-      seq("{", repeats(record_field, optionals(":", $.expression)), "}"),
+      seq("{", repeats(LOWER, optionals(":", $.expression)), "}"),
       // This rule is quite generous, possibly too generous.
-      seq($.expression, "{", repeats(record_field, "=", $.expression), "}"),
+      seq($.expression, "{", repeats(LOWER, "=", $.expression), "}"),
     ),
+
+
+    properName : $ => choice(UPPER),
+
+    typeVarBinding : $ => choice(
+      $._ident,
+      // seq("(", $._ident, "::", $.type, ")"),
+    ),
+
+
+    typeAtom : $ => choice(
+      "_",
+      $._ident,
+      $._qualProperName,
+      $._qualSymbol,
+      LIT_STRING,
+      LIT_INT,
+      // $.hole,
+      // '(->)', // Not sure this is right
+      // seq("{", optional($.row), "}"),
+      // seq("(", optional($.row), ")"),
+      // seq("(", $.type1, ")"),
+      // seq("(", $.typeKindedAtom, "::", $.type, ")"),
+    ),
+
+    _qualProperName : $ => prec(-1, choice(UPPER, QUAL_UPPER)),
+    _qualSymbol : $ => choice(SYMBOL, QUAL_SYMBOL, '(..)'),
+    _symbol : $ => choice(SYMBOL, '(..)'),
   }
 });
