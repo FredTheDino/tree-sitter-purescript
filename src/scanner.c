@@ -82,5 +82,11 @@ bool tree_sitter_purescript_external_scanner_scan(void *payload, TSLexer *lexer,
       return true;
     }
   }
-  return false;
+
+  if (valid_symbols[CONT] && lexer->eof(lexer)) {
+    lexer->result_symbol = CONT;
+    return true;
+  } else {
+    return false;
+  }
 }

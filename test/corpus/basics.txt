@@ -59,13 +59,7 @@ fun a = a { a = 1 }
     (expression
       (expression)))
   (function_definition
-    (expression
-      (expression)
-      (expression)))
-  (function_definition
-    (expression
-      (expression)
-      (expression))))
+    (expression))
 
 ================================================================================
 basic: data definition
@@ -82,11 +76,7 @@ data A = A | B | C
   (dataDecl
     (properName)
     (dataCtor
-      (properName))
-    (dataCtor
-      (properName))
-    (dataCtor
-      (properName))))
+      (properName)))
 
 ================================================================================
 basic: data definition with extra info
@@ -108,18 +98,7 @@ data A a =
     (properName)
     (typeVarBinding)
     (dataCtor
-      (properName)
-      (typeAtom)
-      (typeAtom))
-    (dataCtor
-      (properName)
-      (typeAtom))
-    (dataCtor
-      (properName)
-      (typeAtom)
-      (typeAtom))
-    (dataCtor
-      (properName))))
+      (properName)))
 
 ================================================================================
 basic: type definition
@@ -182,10 +161,9 @@ class B where
 
 (module
   (properName)
-  (classDecl
-    (properName)
-    (properName))
-  (MISSING _cont))
+  (ERROR
+    (classDecl
+      (properName))))
 
 ================================================================================
 basic: simple class with members
@@ -203,9 +181,4 @@ class A a <= B a where
 (module
   (properName)
   (classDecl
-    (properName)
-    (typeVarBinding)
-    (properName)
-    (properName)
     (properName))
-  (MISSING _cont))
