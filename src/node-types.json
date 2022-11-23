@@ -1,32 +1,94 @@
 [
   {
-    "type": "data",
+    "type": "adoBlock",
     "named": true,
-    "fields": {
-      "arguments": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "type_variable",
-            "named": true
-          }
-        ]
-      },
-      "body": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "|",
-            "named": false
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "begin",
+          "named": true
+        },
+        {
+          "type": "doStatement",
+          "named": true
+        },
+        {
+          "type": "end",
+          "named": true
+        },
+        {
+          "type": "sep",
+          "named": true
+        }
+      ]
     }
   },
   {
-    "type": "expression",
+    "type": "binder",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binder1",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "binder1",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binder1",
+          "named": true
+        },
+        {
+          "type": "binder2",
+          "named": true
+        },
+        {
+          "type": "qualOp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "binder2",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binderAtom",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "binderAtom",
     "named": true,
     "fields": {},
     "children": {
@@ -34,99 +96,1580 @@
       "required": false,
       "types": [
         {
-          "type": "expression",
+          "type": "binder",
+          "named": true
+        },
+        {
+          "type": "binderAtom",
+          "named": true
+        },
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "char",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "qualProperName",
+          "named": true
+        },
+        {
+          "type": "recordBinder",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "function_definition",
-    "named": true,
-    "fields": {
-      "arguments": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "@",
-            "named": false
-          },
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      },
-      "body": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "identifier",
+    "type": "boolean",
     "named": true,
     "fields": {}
   },
   {
-    "type": "module",
+    "type": "caseBranch",
     "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "module_name",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binder1",
+          "named": true
+        },
+        {
+          "type": "guardedCase",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "classHead",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "classNameAndFundeps",
+          "named": true
+        },
+        {
+          "type": "constraints",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "classMember",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "classNameAndFundeps",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "fundeps",
+          "named": true
+        },
+        {
+          "type": "properName",
+          "named": true
+        },
+        {
+          "type": "typeVarBinding",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        },
+        {
+          "type": "qualProperName",
+          "named": true
+        },
+        {
+          "type": "typeAtom",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constraints",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "dataCtor",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "properName",
+          "named": true
+        },
+        {
+          "type": "typeAtom",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "dataHead",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "properName",
+          "named": true
+        },
+        {
+          "type": "typeVarBinding",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "dataMembers",
+    "named": true,
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
       "types": [
         {
-          "type": "data",
-          "named": true
-        },
-        {
-          "type": "function_definition",
+          "type": "properName",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "module_name",
+    "type": "decl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "begin",
+          "named": true
+        },
+        {
+          "type": "binderAtom",
+          "named": true
+        },
+        {
+          "type": "classHead",
+          "named": true
+        },
+        {
+          "type": "classMember",
+          "named": true
+        },
+        {
+          "type": "dataCtor",
+          "named": true
+        },
+        {
+          "type": "dataHead",
+          "named": true
+        },
+        {
+          "type": "end",
+          "named": true
+        },
+        {
+          "type": "fixity",
+          "named": true
+        },
+        {
+          "type": "guardedDecl",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "instBinding",
+          "named": true
+        },
+        {
+          "type": "instHead",
+          "named": true
+        },
+        {
+          "type": "newtypeHead",
+          "named": true
+        },
+        {
+          "type": "properName",
+          "named": true
+        },
+        {
+          "type": "role",
+          "named": true
+        },
+        {
+          "type": "sep",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "typeHead",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "doBlock",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "begin",
+          "named": true
+        },
+        {
+          "type": "doStatement",
+          "named": true
+        },
+        {
+          "type": "end",
+          "named": true
+        },
+        {
+          "type": "sep",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "doStatement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "begin",
+          "named": true
+        },
+        {
+          "type": "binder",
+          "named": true
+        },
+        {
+          "type": "end",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "letBinding",
+          "named": true
+        },
+        {
+          "type": "sep",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "export_",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "dataMembers",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "moduleName",
+          "named": true
+        },
+        {
+          "type": "properName",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exports",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "export_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr1",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr1",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr1",
+          "named": true
+        },
+        {
+          "type": "expr2",
+          "named": true
+        },
+        {
+          "type": "qualOp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr2",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr2",
+          "named": true
+        },
+        {
+          "type": "expr3",
+          "named": true
+        },
+        {
+          "type": "exprBacktick",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr3",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expr3",
+          "named": true
+        },
+        {
+          "type": "expr4",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr4",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr4",
+          "named": true
+        },
+        {
+          "type": "expr5",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr5",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "adoBlock",
+          "named": true
+        },
+        {
+          "type": "begin",
+          "named": true
+        },
+        {
+          "type": "binderAtom",
+          "named": true
+        },
+        {
+          "type": "caseBranch",
+          "named": true
+        },
+        {
+          "type": "doBlock",
+          "named": true
+        },
+        {
+          "type": "end",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "expr6",
+          "named": true
+        },
+        {
+          "type": "letBinding",
+          "named": true
+        },
+        {
+          "type": "sep",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr6",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr7",
+          "named": true
+        },
+        {
+          "type": "recordUpdateOrLabel",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr7",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exprAtom",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exprAtom",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "char",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "hole",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "qualIdent",
+          "named": true
+        },
+        {
+          "type": "qualProperName",
+          "named": true
+        },
+        {
+          "type": "qualSymbol",
+          "named": true
+        },
+        {
+          "type": "recordLabel",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exprBacktick",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr3",
+          "named": true
+        },
+        {
+          "type": "exprBacktick",
+          "named": true
+        },
+        {
+          "type": "qualOp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exprWhere",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "begin",
+          "named": true
+        },
+        {
+          "type": "end",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "letBinding",
+          "named": true
+        },
+        {
+          "type": "sep",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "fixity",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "infix",
+          "named": true
+        },
+        {
+          "type": "int",
+          "named": true
+        },
+        {
+          "type": "qualIdent",
+          "named": true
+        },
+        {
+          "type": "qualProperName",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "fundep",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "fundeps",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "fundep",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "guard",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "patternGuard",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "guardedCase",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exprWhere",
+          "named": true
+        },
+        {
+          "type": "guardedCaseExpr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "guardedCaseExpr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exprWhere",
+          "named": true
+        },
+        {
+          "type": "guard",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "guardedDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exprWhere",
+          "named": true
+        },
+        {
+          "type": "guardedDeclExpr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "guardedDeclExpr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exprWhere",
+          "named": true
+        },
+        {
+          "type": "guard",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ident",
     "named": true,
     "fields": {}
   },
   {
-    "type": "type_variable",
+    "type": "importDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "imports",
+          "named": true
+        },
+        {
+          "type": "moduleName",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "import_",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "dataMembers",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "properName",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "imports",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "import_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "infix",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "instBinding",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binderAtom",
+          "named": true
+        },
+        {
+          "type": "guardedDecl",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "instHead",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "constraints",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "qualProperName",
+          "named": true
+        },
+        {
+          "type": "typeAtom",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "int",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "label",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "letBinding",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binder1",
+          "named": true
+        },
+        {
+          "type": "binderAtom",
+          "named": true
+        },
+        {
+          "type": "exprWhere",
+          "named": true
+        },
+        {
+          "type": "guardedDecl",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "module",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "moduleBody",
+          "named": true
+        },
+        {
+          "type": "moduleHeader",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "moduleBody",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "end",
+          "named": true
+        },
+        {
+          "type": "moduleDecl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "moduleDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "decl",
+          "named": true
+        },
+        {
+          "type": "importDecl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "moduleHeader",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "begin",
+          "named": true
+        },
+        {
+          "type": "end",
+          "named": true
+        },
+        {
+          "type": "exports",
+          "named": true
+        },
+        {
+          "type": "importDecl",
+          "named": true
+        },
+        {
+          "type": "moduleName",
+          "named": true
+        },
+        {
+          "type": "sep",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "moduleName",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "newtypeHead",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "properName",
+          "named": true
+        },
+        {
+          "type": "typeVarBinding",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "number",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "patternGuard",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binder",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "expr1",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "properName",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "qualIdent",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "qualOp",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "qualProperName",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "qualSymbol",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "recordBinder",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binder",
+          "named": true
+        },
+        {
+          "type": "label",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "recordLabel",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "label",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "recordUpdate",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "label",
+          "named": true
+        },
+        {
+          "type": "recordUpdate",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "recordUpdateOrLabel",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "label",
+          "named": true
+        },
+        {
+          "type": "recordUpdate",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "role",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "row",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "rowLabel",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "rowLabel",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "label",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "string",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "symbol",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type1",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type1",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "type1",
+          "named": true
+        },
+        {
+          "type": "type2",
+          "named": true
+        },
+        {
+          "type": "typeVarBinding",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type2",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "type1",
+          "named": true
+        },
+        {
+          "type": "type3",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type3",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "qualOp",
+          "named": true
+        },
+        {
+          "type": "type3",
+          "named": true
+        },
+        {
+          "type": "type4",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type4",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "int",
+          "named": true
+        },
+        {
+          "type": "type5",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type5",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "typeAtom",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "typeAtom",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "hole",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "int",
+          "named": true
+        },
+        {
+          "type": "qualProperName",
+          "named": true
+        },
+        {
+          "type": "qualSymbol",
+          "named": true
+        },
+        {
+          "type": "row",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type1",
+          "named": true
+        },
+        {
+          "type": "typeKindedAtom",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "typeHead",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "properName",
+          "named": true
+        },
+        {
+          "type": "typeVarBinding",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "typeKindedAtom",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "hole",
+          "named": true
+        },
+        {
+          "type": "int",
+          "named": true
+        },
+        {
+          "type": "qualProperName",
+          "named": true
+        },
+        {
+          "type": "qualSymbol",
+          "named": true
+        },
+        {
+          "type": "row",
+          "named": true
+        },
+        {
+          "type": "type1",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "typeVarBinding",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "(",
+    "named": false
+  },
+  {
+    "type": "(->)",
+    "named": false
+  },
+  {
+    "type": "(..)",
     "named": false
   },
   {
@@ -138,6 +1681,14 @@
     "named": false
   },
   {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": "->",
+    "named": false
+  },
+  {
     "type": ".",
     "named": false
   },
@@ -146,7 +1697,23 @@
     "named": false
   },
   {
+    "type": "::",
+    "named": false
+  },
+  {
+    "type": "<-",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
     "type": "=",
+    "named": false
+  },
+  {
+    "type": "=>",
     "named": false
   },
   {
@@ -158,7 +1725,47 @@
     "named": false
   },
   {
+    "type": "\\",
+    "named": false
+  },
+  {
     "type": "]",
+    "named": false
+  },
+  {
+    "type": "_",
+    "named": false
+  },
+  {
+    "type": "`",
+    "named": false
+  },
+  {
+    "type": "ado",
+    "named": false
+  },
+  {
+    "type": "as",
+    "named": false
+  },
+  {
+    "type": "begin",
+    "named": true
+  },
+  {
+    "type": "case",
+    "named": false
+  },
+  {
+    "type": "char",
+    "named": true
+  },
+  {
+    "type": "class",
+    "named": false
+  },
+  {
+    "type": "classs",
     "named": false
   },
   {
@@ -166,7 +1773,115 @@
     "named": false
   },
   {
+    "type": "derive",
+    "named": false
+  },
+  {
+    "type": "do",
+    "named": false
+  },
+  {
+    "type": "else",
+    "named": false
+  },
+  {
+    "type": "end",
+    "named": true
+  },
+  {
+    "type": "false",
+    "named": false
+  },
+  {
+    "type": "forall",
+    "named": false
+  },
+  {
+    "type": "foreign",
+    "named": false
+  },
+  {
+    "type": "hiding",
+    "named": false
+  },
+  {
+    "type": "hole",
+    "named": true
+  },
+  {
+    "type": "if",
+    "named": false
+  },
+  {
+    "type": "import",
+    "named": false
+  },
+  {
+    "type": "in",
+    "named": false
+  },
+  {
+    "type": "infix",
+    "named": false
+  },
+  {
+    "type": "infixl",
+    "named": false
+  },
+  {
+    "type": "infixr",
+    "named": false
+  },
+  {
+    "type": "instance",
+    "named": false
+  },
+  {
+    "type": "let",
+    "named": false
+  },
+  {
     "type": "module",
+    "named": false
+  },
+  {
+    "type": "newtype",
+    "named": false
+  },
+  {
+    "type": "nominal",
+    "named": false
+  },
+  {
+    "type": "of",
+    "named": false
+  },
+  {
+    "type": "phantom",
+    "named": false
+  },
+  {
+    "type": "representational",
+    "named": false
+  },
+  {
+    "type": "role",
+    "named": false
+  },
+  {
+    "type": "sep",
+    "named": true
+  },
+  {
+    "type": "then",
+    "named": false
+  },
+  {
+    "type": "true",
+    "named": false
+  },
+  {
+    "type": "type",
     "named": false
   },
   {
