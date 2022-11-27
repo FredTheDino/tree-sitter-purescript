@@ -1,5 +1,5 @@
 ================================================================================
-basic: tiny module
+tiny module
 ================================================================================
 
 module A where
@@ -14,7 +14,7 @@ fun a = a
     (expression)))
 
 ================================================================================
-basic: module name with dots
+module name with dots
 ================================================================================
 
 module A.B.C.D where
@@ -28,7 +28,7 @@ module A.B.C.D where
   name: (properName))
 
 ================================================================================
-basic: bigger module
+bigger module
 ================================================================================
 
 module A where
@@ -40,8 +40,6 @@ fun a = 1
 fun a = { a }
 
 fun a = { a : 1 }
-
-fun a = a { a = 1 }
 
 fun a = a { a = 1 }
 
@@ -59,10 +57,12 @@ fun a = a { a = 1 }
     (expression
       (expression)))
   (function_definition
-    (expression))
+    (expression
+      (expression)
+      (expression))))
 
 ================================================================================
-basic: data definition
+data definition
 ================================================================================
 
 module A where
@@ -76,10 +76,14 @@ data A = A | B | C
   (dataDecl
     (properName)
     (dataCtor
-      (properName)))
+      (properName))
+    (dataCtor
+      (properName))
+    (dataCtor
+      (properName))))
 
 ================================================================================
-basic: data definition with extra info
+data definition with extra info
 ================================================================================
 
 module A where
@@ -98,10 +102,21 @@ data A a =
     (properName)
     (typeVarBinding)
     (dataCtor
-      (properName)))
+      (properName)
+      (typeAtom)
+      (typeAtom))
+    (dataCtor
+      (properName)
+      (typeAtom))
+    (dataCtor
+      (properName)
+      (typeAtom)
+      (typeAtom))
+    (dataCtor
+      (properName))))
 
 ================================================================================
-basic: type definition
+type definition
 ================================================================================
 
 module A where
@@ -117,7 +132,7 @@ type A = A
     (properName)))
 
 ================================================================================
-basic: newtype definition
+newtype definition
 ================================================================================
 
 module A where
@@ -134,7 +149,7 @@ newtype A = A abc
     (typeVarBinding)))
 
 ================================================================================
-basic: simple class
+simple class
 ================================================================================
 
 module A where
@@ -149,7 +164,7 @@ class A
     (properName)))
 
 ================================================================================
-basic: simple class with member
+simple class with member
 ================================================================================
 
 module A where
@@ -161,17 +176,37 @@ class B where
 
 (module
   (properName)
-  (ERROR
-    (classDecl
-      (properName))))
+  (classDecl
+    (properName)
+    (properName)))
 
 ================================================================================
-basic: simple class with members
+simple class with two member
 ================================================================================
 
 module A where
 
-class A a <= B a where
+class B where
+  a :: Int
+  b :: Int
+
+--------------------------------------------------------------------------------
+
+(module
+  (properName)
+  (classDecl
+    (properName)
+    (properName)
+    (properName)))
+
+
+================================================================================
+class with deps and 3 members
+================================================================================
+
+module A where
+
+class (A a) <= B a where
   a :: Int
   b :: Int
   c :: Int
@@ -181,4 +216,8 @@ class A a <= B a where
 (module
   (properName)
   (classDecl
-    (properName))
+    (properName)
+    (typeVarBinding)
+    (properName)
+    (properName)
+    (properName)))

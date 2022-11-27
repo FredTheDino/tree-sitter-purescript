@@ -2,36 +2,13 @@
   {
     "type": "classDecl",
     "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "properName",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
       "types": [
         {
           "type": "constraint",
-          "named": true
-        },
-        {
-          "type": "fundep",
-          "named": true
-        },
-        {
-          "type": "properName",
-          "named": true
-        },
-        {
-          "type": "typeVarBinding",
           "named": true
         }
       ]

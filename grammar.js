@@ -116,16 +116,33 @@ module.exports = grammar({
     classDecl : $ => seq(
       "class",
       optional(seq($._constraints, "<=")),
+    ),
+
+    _classDeclWithoutDeps : $ => seq(
+      "class",
       field("name", $.properName),
       manyOrEmpty($.typeVarBinding),
       optional($._fundeps),
 
-      optional(seq(
+      optional($._classDeclBody),
+    ),
+
+    _classDeclWithDeps : $ => seq(
+      "class",
+      $._constraints,
+      "<=",
+      field("name", $.properName),
+      manyOrEmpty($.typeVarBinding),
+      optional($._fundeps),
+
+      optional($._classDeclBody),
+    ),
+
+    _classDeclBody : $ => seq(
         "where",
         $._begin,
         manySep(seq($._ident, "::", $._type), $._cont),
         $._end
-      )),
     ),
 
     _fundeps : $ => seq("|", sep($.fundep, ",")),
