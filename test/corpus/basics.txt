@@ -199,7 +199,6 @@ class B where
     (properName)
     (properName)))
 
-
 ================================================================================
 class with deps and 3 members
 ================================================================================
@@ -216,6 +215,9 @@ class (A a) <= B a where
 (module
   (properName)
   (classDecl
+    (constraint
+      (constraint
+        (typeAtom)))
     (properName)
     (typeVarBinding)
     (properName)

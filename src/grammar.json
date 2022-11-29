@@ -383,32 +383,15 @@
       ]
     },
     "classDecl": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "STRING",
-          "value": "class"
+          "type": "SYMBOL",
+          "name": "_classDeclWithDeps"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_constraints"
-                },
-                {
-                  "type": "STRING",
-                  "value": "<="
-                }
-              ]
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_classDeclWithoutDeps"
         }
       ]
     },
@@ -481,12 +464,8 @@
           "value": "class"
         },
         {
-          "type": "FIELD",
-          "name": "constraints",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_constraints"
-          }
+          "type": "SYMBOL",
+          "name": "_constraints"
         },
         {
           "type": "STRING",
@@ -711,10 +690,6 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "constraint"
-        },
-        {
           "type": "SEQ",
           "members": [
             {
@@ -751,6 +726,10 @@
               "value": ")"
             }
           ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "constraint"
         }
       ]
     },
@@ -1100,13 +1079,17 @@
       ]
     },
     "properName": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "[A-Z][A-Za-z0-9_]*"
-        }
-      ]
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "[A-Z][A-Za-z0-9_]*"
+          }
+        ]
+      }
     },
     "typeVarBinding": {
       "type": "CHOICE",
@@ -1147,21 +1130,17 @@
       ]
     },
     "_qualProperName": {
-      "type": "PREC",
-      "value": -1,
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "PATTERN",
-            "value": "[A-Z][A-Za-z0-9_]*"
-          },
-          {
-            "type": "PATTERN",
-            "value": "([A-Z][A-Za-z0-9_]\\.)+[A-Z][A-Za-z0-9_]*"
-          }
-        ]
-      }
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[A-Z][A-Za-z0-9_]*"
+        },
+        {
+          "type": "PATTERN",
+          "value": "([A-Z][A-Za-z0-9_]\\.)+[A-Z][A-Za-z0-9_]*"
+        }
+      ]
     },
     "_qualSymbol": {
       "type": "CHOICE",

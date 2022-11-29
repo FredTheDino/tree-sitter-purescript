@@ -1,5 +1,5 @@
 // Helpful:
-// https://github.com/purescript/purescript/blob/master/src/Language/PureScript/CST/Parser.y 
+// https://github.com/purescript/purescript/blob/master/src/Language/PureScript/CST/Parser.y
 // https://github.com/tree-sitter/tree-sitter-haskell/
 // https://tree-sitter.github.io/tree-sitter/creating-parsers#the-grammar-dsl
 //
@@ -21,21 +21,22 @@
 //  - operators
 //  - more...
 
-const LOWER              = /[a-z][A-Za-z0-9_]*/
-const QUAL_LOWER         = /([A-Z][A-Za-z0-9_]\.)+[a-z][A-Za-z0-9_]*/
-const UPPER              = /[A-Z][A-Za-z0-9_]*/
-const QUAL_UPPER         = /([A-Z][A-Za-z0-9_]\.)+[A-Z][A-Za-z0-9_]*/
-const SYMBOL             = /[a-z]+/ // No idea what to put here, I'm guessing its something like this
-const QUAL_SYMBOL        = /([A-Z][A-Za-z0-9_]\.)+[a-z]+/
-const OPERATOR           = /[<>?!#@£$+\-*\/]/ // No idea what to put here, I'm guessing its something like this
-const QUAL_OPERATOR      = /([A-Z][A-Za-z0-9_]\.)+[<>?!#@£$+\-*\/]+/
-const LIT_HOLE           = /_[A-Za-z0-9_]+/
-const LIT_CHAR           = /'.'/
-const LIT_STRING         = /".*"/
-const LIT_RAW_STRING     = /""".*"""/ // This is wrong
-const LIT_INT            = /[0-9]+/
-const LIT_NUMBER         = /[0-9]+\.[0-9]*/ // This is wrong
-
+const LOWER = /[a-z][A-Za-z0-9_]*/
+const QUAL_LOWER = /([A-Z][A-Za-z0-9_]\.)+[a-z][A-Za-z0-9_]*/
+const UPPER = /[A-Z][A-Za-z0-9_]*/
+const QUAL_UPPER = /([A-Z][A-Za-z0-9_]\.)+[A-Z][A-Za-z0-9_]*/
+const SYMBOL =
+    /[a-z]+/ // No idea what to put here, I'm guessing its something like this
+const QUAL_SYMBOL = /([A-Z][A-Za-z0-9_]\.)+[a-z]+/
+const OPERATOR = /[<>?!#@£$+\-*\/]/ // No idea what to put here, I'm guessing
+                                     // its something like this
+const QUAL_OPERATOR = /([A-Z][A-Za-z0-9_]\.)+[<>?!#@£$+\-*\/]+/
+const LIT_HOLE = /_[A-Za-z0-9_]+/
+const LIT_CHAR = /'.'/
+const LIT_STRING = /".*"/
+const LIT_RAW_STRING = /""".*"""/ // This is wrong
+const LIT_INT = /[0-9]+/
+const LIT_NUMBER = /[0-9]+\.[0-9]*/ // This is wrong
 
 const sep_by = (sep, ...thing) => seq(seq(...thing), repeats(sep, ...thing))
 const optionals = (...thing) => optional(seq(...thing))
@@ -47,7 +48,6 @@ const manySepOrEmpty = (thing, sep) => optional(manySep(thing, sep))
 const manyOrEmpty = (...things) => optional(many(...things))
 const sep = (a, s) => seq(a, repeat(seq(s, a)))
 const delim = (b, t, s, d) => seq(b, optional(sep(t, s)), d)
-
 
 module.exports = grammar({
   name : "purescript",
@@ -113,9 +113,9 @@ module.exports = grammar({
       $._type,
     ),
 
-    classDecl : $ => seq(
-      "class",
-      optional(seq($._constraints, "<=")),
+    classDecl : $ => choice(
+      $._classDeclWithDeps,
+      $._classDeclWithoutDeps,
     ),
 
     _classDeclWithoutDeps : $ => seq(
@@ -152,8 +152,8 @@ module.exports = grammar({
     ),
 
     _constraints : $ => choice(
+      seq("(", sep($.constraint, ","), ")"),
       $.constraint,
-      seq("(", sep($.constraint, ","), ")")
     ),
 
     constraint : $ => prec(1, choice(
@@ -199,7 +199,7 @@ module.exports = grammar({
     ),
 
 
-    properName : $ => choice(UPPER),
+    properName : $ => prec(1, choice(UPPER)),
 
     typeVarBinding : $ => choice(
       $._ident,
@@ -222,7 +222,7 @@ module.exports = grammar({
       // seq("(", $.typeKindedAtom, "::", $.type, ")"),
     ),
 
-    _qualProperName : $ => prec(-1, choice(UPPER, QUAL_UPPER)),
+    _qualProperName : $ => choice(UPPER, QUAL_UPPER),
     _qualSymbol : $ => choice(SYMBOL, QUAL_SYMBOL, '(..)'),
     _symbol : $ => choice(SYMBOL, '(..)'),
   }
